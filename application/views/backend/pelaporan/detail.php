@@ -36,7 +36,7 @@
                   <!-- Ticket type -->
                   <label class="mt-2 mb-1">Nama Lengkap :</label>
                   <p>
-                    <i class='fe-user font-18 text-success mr-1 align-middle'></i> <?= $get_laporan_id['nama_pelapor']?>
+                    <i class='fe-user font-18 text-success mr-1 align-middle'></i> <?= $get_laporan_id['nama']?>
                   </p>
                   <!-- end Ticket Type -->
                 </div>
@@ -131,12 +131,6 @@
               <div class="card mb-1 shadow-none border">
                 <div class="p-2 text-center">
                   <img src="<?= base_url('assets/images/uploads/') . $get_laporan_id['stnk']?>" alt="" width="250px">
-                </div>
-              </div>
-
-              <div class="card mb-1 shadow-none border">
-                <div class="p-2 text-center">
-                  <img src="<?= base_url('assets/images/uploads/') . $get_laporan_id['bpkb']?>" alt="" width="250px">
                 </div>
               </div>
 

@@ -9,11 +9,6 @@ class Auth extends BD_Controller{
     {
         // Construct the parent class
         parent::__construct();
-        // Configure limits on our controller methods
-        // Ensure you have created the 'limits' table and enabled 'limits' within application/config/rest.php
-        $this->methods['users_get']['limit'] = 500; // 500 requests per hour per user/key
-        $this->methods['users_post']['limit'] = 100; // 100 requests per hour per user/key
-        $this->methods['users_delete']['limit'] = 50; // 50 requests per hour per user/key
         $this->load->model('m_users');
     }
 
@@ -22,8 +17,6 @@ class Auth extends BD_Controller{
       $username = $this->post('username'); //data input username
       $password = sha1($this->post('password')); //data input password
       $user_arr = array('username' => $username);
-
-      $kunci = $this->config->item('thekey'); //respon jika login gagal
 
       $val = $this->m_users->get_username($user_arr)->row();
 
@@ -37,24 +30,22 @@ class Auth extends BD_Controller{
       }
 
       $match = $val->password; //mengambil data password dari database
+      $status = $val->user_active;
 
-      if ($password == $match) { //kondisi jika password yang di input sama dengan password yang ada di database
+      if ($password === $match) { //kondisi jika password yang di input sama dengan password yang ada di database
         
-        $token['id'] = $val->id; //di lihat dari id users
-        $token['username'] = $username;
-
-        $date = new DateTime();
-        $token['iat'] = $date->getTimestamp();
-        $token['exp'] = $date->getTimestamp() + 60*60*5; //fungsi untuk generate token
-
-        $output = JWT::encode($token, $kunci); //hasil dari generate token akan di tampilan di respon 200
-        
-        $this->response([
-          'status' => true,
-          'token' => $output,
-          'message' => 'Login sukses',
-          'data' => $val
-        ], REST_Controller::HTTP_OK); //response jika data berhasil digunakan untuk login
+        if ($status != 0) {
+          $this->response([
+            'status' => true,
+            'message' => 'Login sukses',
+            'data' => $val
+          ], REST_Controller::HTTP_OK); //response jika data berhasil digunakan untuk login
+        }else{
+          $this->response([
+            'status' => false,
+            'message' => 'Akun anda belum diverifikasi'
+          ]); //response jika data tidak ditemukan
+        }
 
       }else {
         

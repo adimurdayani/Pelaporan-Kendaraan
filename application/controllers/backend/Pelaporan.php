@@ -2,14 +2,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Pelaporan extends CI_Controller {
-
   
   public function __construct()
   {
     parent::__construct();
     $this->load->model('m_laporan');
     $this->load->model('m_referensi');
-    
     
     if (!$this->session->userdata('username')) {
       redirect('login');
@@ -54,13 +52,6 @@ class Pelaporan extends CI_Controller {
         $file_stnk = $data_stnk['file_name'];
       }
 
-      if (!empty($_FILES['bpkb'])) {
-        # code...
-        $this->upload->do_upload('bpkb');
-        $data_bpkb = $this->upload->data();
-        $file_bpkb = $data_bpkb['file_name'];
-      }
-
       $data = [
           'nama_pelapor'  => $this->input->post('nama_pelapor'),
           'kelamin'       => $this->input->post('kelamin'),
@@ -70,7 +61,6 @@ class Pelaporan extends CI_Controller {
           'no_kk'         => $this->input->post('no_kk'),
           'no_ken'        => $this->input->post('no_ken'),
           'stnk'          => $file_stnk,
-          'bpkb'          => $file_bpkb,
           'latitude'      => $this->input->post('latitude'),
           'longitude'     => $this->input->post('longitude'),
           'keterangan'    => $this->input->post('keterangan'),
@@ -182,46 +172,93 @@ class Pelaporan extends CI_Controller {
     
     $gettoken = $this->db->get_where('users', ['id' => $user_id])->row();
     $getstatus = $this->db->get_where('laporan', ['nama_pelapor' => $user_id])->row();
-
-    $getAll = '["'.$gettoken->token.'"]';
-    $curl = curl_init();
+    
     $authKey = "key=AAAAd4l8OVk:APA91bG5zmAoZ_b-ToKVhUpN_Qj9MVNeJ5TkhukYoYX96pEVIBjKlpsNL7wgT0Lr7A_0TBvXl_7Ep3inm-aHzygfQQNs1tCImsuBwh5VuyC_JC9czFoNZSreJytv39DZBW2Ono-WKKCL";
-    $registration_ids =  $getAll;
-    curl_setopt_array($curl, array(
-      CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_ENCODING => "",
-      CURLOPT_MAXREDIRS => 10,
-      CURLOPT_TIMEOUT => 30,
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_CUSTOMREQUEST => "POST",
-      CURLOPT_POSTFIELDS => '{
-                    "registration_ids": ' . $registration_ids . ',
-                    "notification": {
-                        "title": "Pelaporan",
-                        "body": "Laporan anda telah '.$getstatus->status.' dan sementara ditindak lanjuti oleh pihak kepolisian"
-                    }
-                  }',
-      CURLOPT_HTTPHEADER => array(
-        "Authorization: " . $authKey,
-        "Content-Type: application/json",
-        "cache-control: no-cache"
-      ),
-    ));
 
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
+    if($getstatus->status == "MENUNGGU"){
 
-    curl_close($curl);
-    redirect('backend/pelaporan');
+      $getAll = '["'.$gettoken->token.'"]';
+      $curl = curl_init();
+      $registration_ids =  $getAll;
+      curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => '{
+                      "registration_ids": ' . $registration_ids . ',
+                      "notification": {
+                          "title": "Pelaporan",
+                          "body": "Laporan yang anda input kurang lengap, silahkan periksa data anda kembali dan lengkapi."
+                      }
+                    }',
+        CURLOPT_HTTPHEADER => array(
+          "Authorization: " . $authKey,
+          "Content-Type: application/json",
+          "cache-control: no-cache"
+        ),
+      ));
 
-    if ($err) {
-      // echo "cURL Error #:" . $err;
-      json_encode($err);
-    } else {
-      // response ketika data berhasil disimpan
-      echo $response;
+      $response = curl_exec($curl);
+      $err = curl_error($curl);
+
+      curl_close($curl);
+      redirect('backend/pelaporan');
+
+      if ($err) {
+        // echo "cURL Error #:" . $err;
+        json_encode($err);
+      } else {
+        // response ketika data berhasil disimpan
+        echo $response;
+      }
+
+    }else{
+
+      $getAll = '["'.$gettoken->token.'"]';
+      $curl = curl_init();
+      $registration_ids =  $getAll;
+      curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => '{
+                      "registration_ids": ' . $registration_ids . ',
+                      "notification": {
+                          "title": "Pelaporan",
+                          "body": "Laporan anda telah '.$getstatus->status.' dan sementara ditindak lanjuti oleh pihak kepolisian"
+                      }
+                    }',
+        CURLOPT_HTTPHEADER => array(
+          "Authorization: " . $authKey,
+          "Content-Type: application/json",
+          "cache-control: no-cache"
+        ),
+      ));
+
+      $response = curl_exec($curl);
+      $err = curl_error($curl);
+
+      curl_close($curl);
+      redirect('backend/pelaporan');
+
+      if ($err) {
+        // echo "cURL Error #:" . $err;
+        json_encode($err);
+      } else {
+        // response ketika data berhasil disimpan
+        echo $response;
+      }
     }
+
+    
   }
 
 }

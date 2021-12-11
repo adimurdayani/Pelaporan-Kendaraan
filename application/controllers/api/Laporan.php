@@ -63,7 +63,7 @@ class Laporan extends BD_Controller{
     }else{
 
       // mengambil data dengan id yang di kirim
-      $laporan = $this->m_laporan->get_id_laporan($id);
+      $laporan = $this->m_laporan->get_id($id);
 
     }
 
@@ -187,23 +187,6 @@ class Laporan extends BD_Controller{
 
     }
 
-    // if (!empty($_FILES['bpkb'])) {
-
-    //   # code...
-    //   $this->upload->do_upload('bpkb');
-    //   $data_bpkb = $this->upload->data();
-    //   $file_bpkb = $data_bpkb['file_name'];
-
-    // }else {
-      
-    //   // response ketika gambar bermasalah
-    //   $this->response([
-    //     'status'  => false,
-    //     'message' => 'file tidak terupload'
-    //   ], REST_Controller::HTTP_BAD_REQUEST);
-
-    // }
-
     // kirim data yang akan di simpan ke dalam database
     $data = [
       'nama_pelapor'  => $this->post('nama_pelapor'),
@@ -252,8 +235,6 @@ class Laporan extends BD_Controller{
     $config['allowed_types']  = 'jpg|png';
     $config['max_size']       = '1024';
     $config['encrypt_name']		= TRUE;
-    // $config['max_width']   = '1024';
-    // $config['max_height']  = '768';
     
     $this->load->library('upload', $config);
 
@@ -272,23 +253,7 @@ class Laporan extends BD_Controller{
         'message' => 'file tidak terupload'
       ], REST_Controller::HTTP_BAD_REQUEST);
 
-    }
-
-    if (!empty($_FILES['bpkb'])) {
-
-      # code...
-      $this->upload->do_upload('bpkb');
-      $data_bpkb = $this->upload->data();
-      $file_bpkb = $data_bpkb['file_name'];
-
-    }else {
-      
-      // response ketika gambar bermasalah
-      $this->response([
-        'status'  => false,
-        'message' => 'file tidak terupload'
-      ], REST_Controller::HTTP_BAD_REQUEST);
-
+    
     }
 
     $id = $this->post('id');
@@ -306,7 +271,6 @@ class Laporan extends BD_Controller{
       'no_kk'         => $this->post('no_kk'),
       'no_ken'        => $this->post('no_ken'),
       'stnk'          => $file_stnk,
-      'bpkb'          => $file_bpkb,
       'latitude'      => $this->post('latitude'),
       'longitude'     => $this->post('longitude'),
       'keterangan'    => $this->post('keterangan'),

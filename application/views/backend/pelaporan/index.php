@@ -55,7 +55,7 @@
                       <td>
                         <a href="<?= base_url('backend/pelaporan/hapus/') . $laporan['id']?>"
                           class="badge badge-danger hapus"><i class="fe-trash" title="Hapus"></i></a> <br>
-                        <a href="<?= base_url('backend/pelaporan/detail/') . $laporan['id']?>"
+                        <a href="<?= base_url('backend/pelaporan/detail/') . $laporan['nama_pelapor']?>"
                           class="badge badge-success"><i class="fe-eye" title="Detail"></i></a>
                       </td>
                       <td><?= $no++;?></td>

@@ -24,6 +24,18 @@ class M_laporan extends CI_Model {
               JOIN `users` ON `laporan`.`nama_pelapor` = `users`.`id`
               WHERE `laporan`.`nama_pelapor` = $id
               ";
+    return $this->db->query($query)->row_array();
+  }
+
+  public function get_id($id)
+  {
+    $query = "SELECT  `laporan`.*, `kecamatan`.`kecamatan`, `kelurahan`.`kelurahan`,`users`.`nama`
+              FROM `laporan`
+              JOIN `kecamatan` ON `laporan`.`id_kecamatan` = `kecamatan`.`id`
+              JOIN `kelurahan` ON `laporan`.`id_kelurahan` = `kelurahan`.`id`
+              JOIN `users` ON `laporan`.`nama_pelapor` = `users`.`id`
+              WHERE `laporan`.`nama_pelapor` = $id
+              ";
     return $this->db->query($query)->result_array();
   }
 
@@ -41,10 +53,11 @@ class M_laporan extends CI_Model {
 
     }else {
 
-      $query = "SELECT  `laporan`.*, `kecamatan`.`kecamatan`, `kelurahan`.`kelurahan`
+      $query = "SELECT  `laporan`.*, `kecamatan`.`kecamatan`, `kelurahan`.`kelurahan`, `users`.`nama`
                 FROM `laporan`
                 JOIN `kecamatan` ON `laporan`.`id_kecamatan` = `kecamatan`.`id`
                 JOIN `kelurahan` ON `laporan`.`id_kelurahan` = `kelurahan`.`id`
+                JOIN `users` ON `laporan`.`nama_pelapor` = `users`.`id`
                 WHERE `laporan`.`id` = $id
                 ";
       return $this->db->query($query)->row_array();

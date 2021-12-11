@@ -8,13 +8,7 @@
 
               <div class="text-center w-75 m-auto">
                 <div class="auth-logo">
-                  <a href="index.html" class="logo logo-dark text-center">
-                    <span class="logo-lg">
-                      <img src="<?= base_url()?>assets/images/logo-l.png" alt="" height="22">
-                    </span>
-                  </a>
-
-                  <a href="index.html" class="logo logo-light text-center">
+                  <a href="<?= base_url()?>" class="logo logo-dark text-center">
                     <span class="logo-lg">
                       <img src="<?= base_url()?>assets/images/logo-l.png" alt="" height="22">
                     </span>
