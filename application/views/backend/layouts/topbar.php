@@ -4,11 +4,49 @@
     <ul class="list-unstyled topnav-menu float-right mb-0">
 
       <li class="dropdown notification-list topbar-dropdown">
-        <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#"
-          role="button" aria-haspopup="false" aria-expanded="false">
-          <img src="<?= base_url()?>assets/images/users/user-tie-solid.svg" alt="user-image" class="rounded-circle">
+        <a class="nav-link dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+          <i class="fe-bell noti-icon"></i>
+          <span class="badge badge-danger rounded-circle noti-icon-badge" id="total">0</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right dropdown-lg">
+
+          <!-- item-->
+          <div class="dropdown-item noti-title">
+            <h5 class="m-0">
+              <span class="float-right">
+              </span>Notification
+            </h5>
+          </div>
+
+          <div class="noti-scroll" data-simplebar>
+
+            <!-- item-->
+            <a href="<?= base_url(
+                        'backend/d_regis'
+                      ) ?>" class="dropdown-item notify-item">
+              <div class="notify-icon bg-warning">
+                <i class="mdi mdi-account-plus"></i>
+              </div>
+              <p id="nama" class=" mb-0"></p>
+              <p id="pesan" class="text-muted notify-details">Tidak ada akun registrasi.
+              </p>
+              <small class="text-muted float-right" id="tanggal"></small>
+            </a>
+
+            <!-- All-->
+            <a href="<?= base_url('backend/d_regis') ?>" class="dropdown-item text-center text-primary notify-item notify-all">
+              View all
+              <i class="fe-arrow-right"></i>
+            </a>
+
+          </div>
+      </li>
+
+      <li class="dropdown notification-list topbar-dropdown">
+        <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+          <img src="<?= base_url() ?>assets/images/users/user-tie-solid.svg" alt="user-image" class="rounded-circle">
           <span class="pro-user-name ml-1">
-            <?= $users_ses['nama']?><i class="mdi mdi-chevron-down"></i>
+            <?= $users_ses['nama'] ?><i class="mdi mdi-chevron-down"></i>
           </span>
         </a>
         <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
@@ -18,13 +56,13 @@
           </div>
 
           <!-- item-->
-          <a href="<?= base_url('backend/profile/')?>" class="dropdown-item notify-item">
+          <a href="<?= base_url('backend/profile/') ?>" class="dropdown-item notify-item">
             <i class="fe-user"></i>
             <span>Profile</span>
           </a>
 
           <!-- item-->
-          <a href="<?= base_url('backend/users/')?>" class="dropdown-item notify-item">
+          <a href="<?= base_url('backend/users/') ?>" class="dropdown-item notify-item">
             <i class="fe-settings"></i>
             <span>Settings</span>
           </a>
@@ -32,8 +70,7 @@
           <div class="dropdown-divider"></div>
 
           <!-- item-->
-          <a href="javascript:void(0);" class="dropdown-item notify-item" data-toggle="modal"
-            data-target="#modal-logout">
+          <a href="javascript:void(0);" class="dropdown-item notify-item" data-toggle="modal" data-target="#modal-logout">
             <i class="fe-log-out"></i>
             <span>Logout</span>
           </a>
@@ -47,21 +84,21 @@
     <div class="logo-box">
       <a href="index.html" class="logo logo-dark text-center">
         <span class="logo-sm">
-          <img src="<?= base_url()?>assets/images/logo.png" alt="" height="22">
+          <img src="<?= base_url() ?>assets/images/logo.png" alt="" height="22">
           <!-- <span class="logo-lg-text-light">UBold</span> -->
         </span>
         <span class="logo-lg">
-          <img src="<?= base_url()?>assets/images/logo-l.png" alt="" height="20">
+          <img src="<?= base_url() ?>assets/images/logo-l.png" alt="" height="20">
           <!-- <span class="logo-lg-text-light">U</span> -->
         </span>
       </a>
 
       <a href="index.html" class="logo logo-light text-center">
         <span class="logo-sm">
-          <img src="<?= base_url()?>assets/images/logo.png" alt="" height="22">
+          <img src="<?= base_url() ?>assets/images/logo.png" alt="" height="22">
         </span>
         <span class="logo-lg">
-          <img src="<?= base_url()?>assets/images/logo-l.png" alt="" height="20">
+          <img src="<?= base_url() ?>assets/images/logo-l.png" alt="" height="20">
         </span>
       </a>
     </div>
@@ -105,7 +142,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-light" data-dismiss="modal">Tutup</button>
-        <a href="<?= base_url('login/logout')?>" class="btn btn-primary">Logout</a>
+        <a href="<?= base_url('login/logout') ?>" class="btn btn-primary">Logout</a>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
