@@ -119,6 +119,36 @@ class M_laporan extends CI_Model
     $this->db->update('laporan', $data, ['id' => $id]);
     return $this->db->affected_rows();
   }
+
+  public function selesai_id($id)
+  {
+    $this->db->like('status', 'SELESAI');
+    $this->db->from('laporan');
+    $this->db->where('nama_pelapor', $id);
+    return $this->db->count_all_results();
+  }
+
+  public function selesai()
+  {
+    $this->db->like('status', 'SELESAI');
+    $this->db->from('laporan');
+    return $this->db->count_all_results();
+  }
+
+  public function menunggu_id($id)
+  {
+    $this->db->like('status', 'MENUNGGU');
+    $this->db->from('laporan');
+    $this->db->where('nama_pelapor', $id);
+    return $this->db->count_all_results();
+  }
+
+  public function menunggu()
+  {
+    $this->db->like('status', 'MENUNGGU');
+    $this->db->from('laporan');
+    return $this->db->count_all_results();
+  }
 }
 
 /* End of file M_laporan.php */

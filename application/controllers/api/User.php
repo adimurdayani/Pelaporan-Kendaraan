@@ -59,6 +59,55 @@ class User extends BD_Controller
     }
   }
 
+  public function ubahprofile_post()
+  {
+    $this->form_validation->set_rules('nama', 'nama', 'trim|required');
+
+    if ($this->form_validation->run() == FALSE) {
+
+      if (validation_errors() == true) {
+
+        # response ketika username sudah digunakan 
+        $this->response([
+          'status' => false,
+          'message' => 'Ada data yang sudah digunakan'
+        ], REST_Controller::HTTP_BAD_REQUEST);
+      }
+    } else {
+      # inisial data yang akan di input kedalam database
+      $id = $this->input->post('id');
+
+      $data = [
+        'nama' => sha1($this->input->post('nama')),
+        'username' => sha1($this->input->post('username')),
+        'email' => sha1($this->input->post('email')),
+        'phone' => sha1($this->input->post('phone')),
+        'created_at' => date("d M Y H:i"),
+        'updated_at' => date("d M Y H:i")
+
+      ];
+
+      $this->db->where('id', $id);
+
+      $output = $this->db->update('users', $data);
+
+      if ($output == 0) {
+        // response ketika data gagal di simpan
+        $this->response([
+          'status' => false,
+          'message' => 'Data gagal disimpan'
+        ], REST_Controller::HTTP_NOT_FOUND);
+      } else {
+        // response ketika data berhasil disimpan
+        $this->response([
+          'status' => true,
+          'message' => 'Data berhasil disimpan',
+          'data' => $data
+        ], REST_Controller::HTTP_OK);
+      }
+    }
+  }
+
   public function upload_post()
   {
     $config['upload_path']    = './assets/images/users/';

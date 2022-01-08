@@ -1,15 +1,17 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
+
 use \Firebase\JWT\JWT;
 
-class Laporan extends BD_Controller{
+class Laporan extends BD_Controller
+{
 
   function __construct()
-    {
-        // Construct the parent class
-        parent::__construct();
-        $this->load->model('m_laporan');
-    }
+  {
+    // Construct the parent class
+    parent::__construct();
+    $this->load->model('m_laporan');
+  }
 
   public function index_get()
   {
@@ -17,17 +19,15 @@ class Laporan extends BD_Controller{
     $id = $this->get('id');
 
     // kondisi jika id laporan tidak di temukan 
-    
+
     if ($id === NULL) {
-      
+
       // mengambil data dari database
       $laporan = $this->m_laporan->get_laporan_all();
-      
-    }else{
+    } else {
 
       // mengambil data dengan id yang di kirim
       $laporan = $this->m_laporan->get_laporan_all($id);
-
     }
 
     if ($laporan) {
@@ -37,15 +37,13 @@ class Laporan extends BD_Controller{
         'data'    => $laporan,
         'message' => 'sukses'
       ], REST_Controller::HTTP_OK);
-
-    }else {
+    } else {
       # response laporan jika laporan tidak ada
       $this->response([
         'status'  => false,
         'message' => 'laporan tidak di temukan'
       ], REST_Controller::HTTP_NOT_FOUND);
     }
-
   }
 
   public function laporanuser_get()
@@ -54,17 +52,15 @@ class Laporan extends BD_Controller{
     $id = $this->get('nama_pelapor');
 
     // kondisi jika id laporan tidak di temukan 
-    
+
     if ($id === NULL) {
-      
+
       // mengambil data dari database
       $laporan = $this->m_laporan->get_laporan_all();
-      
-    }else{
+    } else {
 
       // mengambil data dengan id yang di kirim
       $laporan = $this->m_laporan->get_id($id);
-
     }
 
     if ($laporan) {
@@ -74,15 +70,13 @@ class Laporan extends BD_Controller{
         'data'    => $laporan,
         'message' => 'sukses'
       ], REST_Controller::HTTP_OK);
-
-    }else {
+    } else {
       # response laporan jika laporan tidak ada
       $this->response([
         'status'  => false,
         'message' => 'laporan tidak di temukan'
       ], REST_Controller::HTTP_NOT_FOUND);
     }
-
   }
 
   public function terkirim_get()
@@ -96,12 +90,10 @@ class Laporan extends BD_Controller{
         'status'  => true,
         'message' => 'status laporan tidak ditemukan'
       ], REST_Controller::HTTP_NOT_FOUND);
-      
-    }else{
-      
+    } else {
+
       // mengambil data dari database
       $laporan = $this->m_laporan->get_laporan_terkirim($status);
-      
     }
 
     if ($laporan) {
@@ -111,15 +103,13 @@ class Laporan extends BD_Controller{
         'data'    => $laporan,
         'message' => 'sukses'
       ], REST_Controller::HTTP_OK);
-
-    }else {
+    } else {
       # response laporan jika laporan tidak ada
       $this->response([
         'status'  => false,
         'message' => 'laporan tidak di temukan'
       ], REST_Controller::HTTP_NOT_FOUND);
     }
-
   }
 
   public function dalamproses_get()
@@ -133,12 +123,10 @@ class Laporan extends BD_Controller{
         'status'  => true,
         'message' => 'status laporan tidak ditemukan'
       ], REST_Controller::HTTP_NOT_FOUND);
-      
-    }else{
-      
+    } else {
+
       // mengambil data dari database
       $laporan = $this->m_laporan->get_laporan_dalamproses($status);
-      
     }
 
     if ($laporan) {
@@ -148,26 +136,24 @@ class Laporan extends BD_Controller{
         'data'    => $laporan,
         'message' => 'sukses'
       ], REST_Controller::HTTP_OK);
-
-    }else {
+    } else {
       # response laporan jika laporan tidak ada
       $this->response([
         'status'  => false,
         'message' => 'laporan tidak di temukan'
       ], REST_Controller::HTTP_NOT_FOUND);
     }
-
   }
 
   # MENAMPILKAN DATA
-  public function index_post() 
+  public function index_post()
   {
 
     $config['upload_path']    = './assets/images/uploads/';
     $config['allowed_types']  = 'jpg|png';
     $config['max_size']       = '1024';
-    $config['encrypt_name']		= TRUE;
-    
+    $config['encrypt_name']    = TRUE;
+
     $this->load->library('upload', $config);
 
     if (!empty($_FILES['stnk'])) {
@@ -176,15 +162,13 @@ class Laporan extends BD_Controller{
       $this->upload->do_upload('stnk');
       $data_stnk = $this->upload->data();
       $file_stnk = $data_stnk['file_name'];
-
-    }else {
+    } else {
 
       // response ketika gambar bermasalah
       $this->response([
         'status'  => false,
         'message' => 'file tidak terupload'
       ], REST_Controller::HTTP_BAD_REQUEST);
-
     }
 
     // kirim data yang akan di simpan ke dalam database
@@ -207,24 +191,21 @@ class Laporan extends BD_Controller{
 
     // proses data yang di kirim ke database
     if ($this->m_laporan->add_laporan($data) > 0) {
-      
+
       // response jika data yang di kirim ada
       $this->response([
         'status'  => true,
         'data'    => $data,
         'message' => 'laporan berhasil disimpan'
       ], REST_Controller::HTTP_CREATED);
-      
-    }else {
-      
+    } else {
+
       // jika data yang di kirim tidak valid
       $this->response([
         'status' => false,
-        'message'=> 'data gagal tersimpan'
+        'message' => 'data gagal tersimpan'
       ], REST_Controller::HTTP_BAD_REQUEST);
-      
     }
-
   }
 
   # MENGEDIT DATA
@@ -234,8 +215,8 @@ class Laporan extends BD_Controller{
     $config['upload_path']    = './assets/images/uploads/';
     $config['allowed_types']  = 'jpg|png';
     $config['max_size']       = '1024';
-    $config['encrypt_name']		= TRUE;
-    
+    $config['encrypt_name']    = TRUE;
+
     $this->load->library('upload', $config);
 
     if (!empty($_FILES['stnk'])) {
@@ -244,23 +225,20 @@ class Laporan extends BD_Controller{
       $this->upload->do_upload('stnk');
       $data_stnk = $this->upload->data();
       $file_stnk = $data_stnk['file_name'];
-
-    }else {
+    } else {
 
       // response ketika gambar bermasalah
       $this->response([
         'status'  => false,
         'message' => 'file tidak terupload'
       ], REST_Controller::HTTP_BAD_REQUEST);
-
-    
     }
 
     $id = $this->post('id');
 
     $this->m_laporan->delete_old_stnk($id);
     $this->m_laporan->delete_old_bpkb($id);
-    
+
     // kirim data yang akan di simpan ke dalam database
     $data = [
       'nama_pelapor'  => $this->post('nama_pelapor'),
@@ -280,7 +258,7 @@ class Laporan extends BD_Controller{
     ];
 
     // jalankan fungsi edit data berdasarkan data yang di kirim
-    if($this->m_laporan->edit_laporan($data, $id) > 0){
+    if ($this->m_laporan->edit_laporan($data, $id) > 0) {
 
       // response data yang telah berhasil di kirim
       $this->response([
@@ -288,16 +266,14 @@ class Laporan extends BD_Controller{
         'data'    => $data,
         'message' => 'data berhasil di ubah'
       ], REST_Controller::HTTP_OK);
+    } else {
 
-    }else {
-      
       // response data yang tidak berhasil di ubah
       $this->response([
         'status'  => false,
         'message' => 'data yang diubah gagal'
       ], REST_Controller::HTTP_BAD_REQUEST);
     }
-
   }
 
   # MENGHAPUS DATA
@@ -307,36 +283,80 @@ class Laporan extends BD_Controller{
     $id = $this->delete('id');
 
     if ($id === null) {
-      
+
       // jika id tidak tersedia
       $this->response([
         'status'  => false,
         'message' => 'id tidak tersedia'
       ], REST_Controller::HTTP_BAD_REQUEST);
+    } else {
 
-    }else {
-      
       // menjalankan aksi delete data
 
       if ($this->m_laporan->delete_laporan($id) > 0) {
-        
+
         // jika id ditemukan maka, aksi hapus data mendapat response
         $this->response([
           'status'  => true,
           'data'    => $id,
           'message' => 'data terhapus'
         ], REST_Controller::HTTP_OK);
+      } else {
 
-      }else {
-        
         // jika id ditemukan maka, aksi hapus data mendapat response
         $this->response([
           'status'  => false,
           'message' => 'id tidak ditemukan'
         ], REST_Controller::HTTP_BAD_REQUEST);
-
       }
+    }
+  }
 
+  public function total_get()
+  {
+    $id = $this->get('nama_pelapor');
+
+    if ($id === null) {
+      # code...
+      $jml_selesai = $this->m_laporan->selesai();
+    } else {
+      $jml_selesai = $this->m_laporan->selesai_id($id);
+    }
+
+    if ($jml_selesai) {
+      $this->response([
+        'status'  => true,
+        'data'    => $jml_selesai,
+        'message' => 'sukses'
+      ], REST_Controller::HTTP_OK);
+    } else {
+      $this->response([
+        'status'  => false,
+        'message' => 'data tidak ditemukan'
+      ], REST_Controller::HTTP_BAD_REQUEST);
+    }
+  }
+
+  public function totalmenunggu_get()
+  {
+    $id = $this->get('nama_pelapor');
+    if ($id === null) {
+      $jml_menunggu = $this->m_laporan->menunggu();
+    } else {
+      $jml_menunggu = $this->m_laporan->menunggu_id($id);
+    }
+
+    if ($jml_menunggu) {
+      $this->response([
+        'status'  => true,
+        'data'    => $jml_menunggu,
+        'message' => 'sukses'
+      ], REST_Controller::HTTP_OK);
+    } else {
+      $this->response([
+        'status'  => false,
+        'message' => 'data tidak ditemukan'
+      ], REST_Controller::HTTP_BAD_REQUEST);
     }
   }
 }
