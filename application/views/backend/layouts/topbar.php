@@ -22,7 +22,7 @@
 
             <!-- item-->
             <a href="<?= base_url(
-                        'backend/d_regis'
+                        'backend/users'
                       ) ?>" class="dropdown-item notify-item">
               <div class="notify-icon bg-warning">
                 <i class="mdi mdi-account-plus"></i>
@@ -34,7 +34,7 @@
             </a>
 
             <!-- All-->
-            <a href="<?= base_url('backend/d_regis') ?>" class="dropdown-item text-center text-primary notify-item notify-all">
+            <a href="<?= base_url('backend/users') ?>" class="dropdown-item text-center text-primary notify-item notify-all">
               View all
               <i class="fe-arrow-right"></i>
             </a>

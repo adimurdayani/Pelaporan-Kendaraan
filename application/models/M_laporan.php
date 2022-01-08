@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_laporan extends CI_Model {
+class M_laporan extends CI_Model
+{
 
   public function get_all()
   {
@@ -50,8 +51,7 @@ class M_laporan extends CI_Model {
                 JOIN `users` ON `laporan`.`nama_pelapor` = `users`.`id`
                 ";
       return $this->db->query($query)->result_array();
-
-    }else {
+    } else {
 
       $query = "SELECT  `laporan`.*, `kecamatan`.`kecamatan`, `kelurahan`.`kelurahan`, `users`.`nama`
                 FROM `laporan`
@@ -61,25 +61,22 @@ class M_laporan extends CI_Model {
                 WHERE `laporan`.`id` = $id
                 ";
       return $this->db->query($query)->row_array();
-      
     }
   }
 
   public function get_laporan_terkirim($status)
-  {    
+  {
     if ($status == 2) {
       # code...
-      return $this->db->get_where('laporan', ['status' =>2])->result_array();
-      
+      return $this->db->get_where('laporan', ['status' => 2])->result_array();
     }
   }
 
   public function get_laporan_dalamproses($status)
-  {    
+  {
     if ($status == 1) {
       # code...
       return $this->db->get_where('laporan', ['status' => 1])->result_array();
-      
     }
   }
 
@@ -95,19 +92,25 @@ class M_laporan extends CI_Model {
     return $this->db->affected_rows();
   }
 
+  public function upload_image($data, $id)
+  {
+    $this->db->update('users', $data, ['id' => $id]);
+    return $this->db->affected_rows();
+  }
+
   public function delete_old_stnk($id)
   {
-    $query = $this->db->query("SELECT stnk FROM `".$this->db->dbprefix('laporan')."` WHERE id = '".$id."' ");
+    $query = $this->db->query("SELECT stnk FROM `" . $this->db->dbprefix('laporan') . "` WHERE id = '" . $id . "' ");
     $row = $query->row();
-    $lokasiImg = ("./assets/images/uploads/" . $row->stnk );
+    $lokasiImg = ("./assets/images/uploads/" . $row->stnk);
     unlink($lokasiImg);
   }
 
   public function delete_old_bpkb($id)
   {
-    $query = $this->db->query("SELECT bpkb FROM `".$this->db->dbprefix('laporan')."` WHERE id = '".$id."' ");
+    $query = $this->db->query("SELECT bpkb FROM `" . $this->db->dbprefix('laporan') . "` WHERE id = '" . $id . "' ");
     $row = $query->row();
-    $lokasiImge = ("./assets/images/uploads/" . $row->bpkb );
+    $lokasiImge = ("./assets/images/uploads/" . $row->bpkb);
     unlink($lokasiImge);
   }
 
@@ -116,7 +119,6 @@ class M_laporan extends CI_Model {
     $this->db->update('laporan', $data, ['id' => $id]);
     return $this->db->affected_rows();
   }
-
 }
 
 /* End of file M_laporan.php */
